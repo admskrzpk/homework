@@ -1,4 +1,5 @@
 object Homework extends App {
+
   import org.apache.spark.sql.SparkSession
   import org.apache.spark.sql.functions._
 
@@ -16,14 +17,12 @@ object Homework extends App {
     .option("header", "true")
     .option("inferSchema", "true")
     .csv(path)
+  filePrepared.schema
+
 
   val dfSorted = filePrepared
-    .sort(desc("leave")).show()
+    .sort(asc("Data_value"))
 
   val dfGrouped = filePrepared
-    .groupBy("Company Name").max()
-
-  val output = dfGrouped
-    .write.csv("newfile.csv")
-
+    .groupBy("Period").max("Data_value").show()
 }
